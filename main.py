@@ -1,15 +1,15 @@
 # %%
 
-import requests
+# 大学ポートレートWebAPI機能を使ってみるチュートリアル
+# https://api-portal.portraits.niad.ac.jp/index.html
 
-# 共通するコンテンツを取得する関数を定義
+import requests
 
 base_url = "https://edit.portraits.niad.ac.jp/api/v1/SchoolBasicSurvey/"
 accesskey = "XXXX"  # ご自身のキーを設定ください
 
+
 # *************　関数定義　*************
-
-
 def retrieve_content_data(api_type, year, orgid):
     """
     指定したAPIタイプ、年度、および組織IDを使用して、コンテンツデータを取得します。
@@ -52,17 +52,6 @@ def retrieve_content_data(api_type, year, orgid):
 
 
 # *************　データの取得・表示　*************
-# 学校施設調査票API情報取得
-# XX大学の寄宿舎施設の面積を取得
-
-base_data = retrieve_content_data("getSchoolFacilities", 2021, "0292")
-
-
-area_yoto = "寄宿舎施設"
-
-for area_datum in base_data["GAKKO_TOCHI_YOTO_AREA"][0]["AREA"]:
-    if area_datum["AREA_YOTO"] == area_yoto:
-        print("寄宿舎施設の面積:" + area_datum["AREA"] + area_datum["AREA_TANI"])
 
 # %%
 # 学生教員等状況票API情報取得
@@ -71,7 +60,9 @@ for area_datum in base_data["GAKKO_TOCHI_YOTO_AREA"][0]["AREA"]:
 base_data = retrieve_content_data("getStudentFacultyStatus", 2021, "0292")
 
 shokuin_data = base_data["SHOKUIN_SU"][0]
-print("職員数:" + shokuin_data["SHOKUIN_SU_KEI"])
+print("XX大学の職員数:" + shokuin_data["SHOKUIN_SU_KEI"])
+# 出力例
+# 職員数:hogehoge
 
 # %%
 # 大学院学生内訳票API情報取得
@@ -80,7 +71,10 @@ print("職員数:" + shokuin_data["SHOKUIN_SU_KEI"])
 base_data = retrieve_content_data("getGraduateStudentsDetail", 2021, "0256-64-22-GS01-09-1")
 
 nyugaku_data = base_data["NYUGAKU_JOKYO"]["SENKO"][0]
-print("入学志願者数(男):" + nyugaku_data["NYUGAKU_SHIGANSHA_SU_KEI_M"])
+print("XX大学の入学志願者数(男):" + nyugaku_data["NYUGAKU_SHIGANSHA_SU_KEI_M"])
+# 出力例
+# 入学志願者数(男):hogehoge
+
 
 # %%
 # 本科学生内訳票API情報取得
@@ -91,20 +85,24 @@ base_data = retrieve_content_data("getJuniorCollegeUndergraduateStudentsDetail",
 
 # %%
 # 外国人学生調査票API情報取得
-
-# タイからの留学生数(女)を取得
+# XX大学におけるタイからの留学生数(女)を取得
 
 base_data = retrieve_content_data("getForeignStudent", 2021, "0292-1Z11")
 ryugakusei_data = base_data["RYUGAKUSEI"][0]["GAKUMON_KOKUBETSU"]
 print("タイからの留学生数(女):" + ryugakusei_data["CHIIKI"][0]["KUNI_GAKUSEI_SU_KEI_F"])
+# 出力例
+# タイからの留学生数(女):hogehoge
 
 
 # %%
 # 卒業後の状況調査票(2-1)API情報取得
 # XX大学院研究科に進学した学部生数(男)を取得
+
 base_data = retrieve_content_data("getStatusAfterGraduationGraduates", 2021, "0292-27-27-1G01-00-1")
 sotugyo_data = base_data["GAKKA_SENKO"][0]["JOKYO_SOTSUGYOSHA_SU"][0]
 print("XX大学院研究科に進学した学部生数(男):" + sotugyo_data["SOTSUGYOSHA_SU"][0]["SOTSUGYOSHA_SU"])
+# 出力例
+# XX大学院研究科に進学した学部生数(男):hogehoge
 
 # %%
 # 卒業後の状況調査票(2-2)API情報取得
@@ -119,3 +117,19 @@ sangyo_name = "E 製造業／7 電子部品・デバイス・電子回路製造�
 for sangyo_datum in sotugyo_data:
     if (sangyo_datum["SHUSHOKUSHA_SANGYO_BUNRUI"] == sangyo_name) & (sangyo_datum["SHUSHOKUSHA_SEX"] == "男"):
         print("産業分類Eに就職した学生数(男):" + sangyo_datum["SHUSHOKUSHA_SU"])
+# 出力例
+# 産業分類Eに就職した学生数(男):hogehoge
+
+# %%
+# 学校施設調査票API情報取得
+# XX大学の寄宿舎施設の面積を取得
+
+base_data = retrieve_content_data("getSchoolFacilities", 2021, "0292")
+
+area_yoto = "寄宿舎施設"
+
+for area_datum in base_data["GAKKO_TOCHI_YOTO_AREA"][0]["AREA"]:
+    if area_datum["AREA_YOTO"] == area_yoto:
+        print("寄宿舎施設の面積:" + area_datum["AREA"] + area_datum["AREA_TANI"])
+# 出力例
+# 寄宿舎施設の面積:hogehoge㎡
